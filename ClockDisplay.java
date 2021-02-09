@@ -17,6 +17,7 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private boolean morning;
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -24,8 +25,9 @@ public class ClockDisplay
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        morning = true;
         updateDisplay();
     }
 
@@ -34,11 +36,12 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, boolean am)
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        morning = am;
+        setTime(hour, minute, am);
     }
 
     /**
@@ -50,7 +53,12 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            if(hours.getValue() == 0) {  // it just rolled over!
+                morning = !morning;
+            }
+                
         }
+        
         updateDisplay();
     }
 
@@ -58,10 +66,11 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, boolean am)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
+        morning = am;
         updateDisplay();
     }
 
@@ -78,7 +87,35 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
+<<<<<<< Updated upstream
         displayString = hours.getDisplayValue() + ":" + 
                         minutes.getDisplayValue();
+=======
+        int hour = hours.getValue();
+        String suffix;
+        
+        if (morning) {
+            suffix = "AM";
+        }
+        else {
+            suffix = "PM";
+        }
+                       
+        if (hour == 0) {
+            hour = 12;
+        }
+        
+        displayString = hour + ":" + 
+                        minutes.getDisplayValue() + suffix;
+    }
+    
+    
+    /**
+     * Print the string that represents the display.
+     */
+    public void get24HourInternalDisplay() 
+    {
+        System.out.println (displayString);
+>>>>>>> Stashed changes
     }
 }
